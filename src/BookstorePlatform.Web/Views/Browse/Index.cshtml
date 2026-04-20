@@ -1,0 +1,127 @@
+﻿@model List<BookstorePlatform.Web.Classes.Book>
+
+@{
+    ViewData["Title"] = "Browse Books";
+    int currentPage = ViewBag.CurrentPage;
+    int totalPages = ViewBag.TotalPages;
+    string sortType = ViewBag.SortType;
+}
+
+<div class="row">
+    <div class="col-md-8 mb-4"></div> <!-- Empty column to push the sort list -->
+    <div class="col-md-4 mb-4 text-right">
+        <form id="sortForm" method="get" action="@Url.Action("Index", "Browse")">
+            <input type="hidden" id="sortTypeInput" name="sortType" value="@ViewBag.SortType" />
+            <label for="sortOption">Sort by:</label>
+            <select id="sortOption" onchange="sortBooks(@ViewBag.CurrentPage)" class="form-control">
+                <option value="">Sort By</option>
+                <option value="alphabetic_asc">Title Ascending</option>
+                <option value="alphabetic_desc">Title Descending</option>
+                <option value="price_asc">Price Ascending</option>
+                <option value="price_desc">Price Descending</option>
+            </select>
+        </form>
+    </div>
+</div>
+<div class="row" id="booksContainer">
+    @foreach (var book in Model)
+    {
+        <div class="col-md-2 mb-4">
+            <div class="card h-100">
+                <div class="card-img-container">
+                    <img src="@book.CoverImg" class="card-img-top" alt="Book Cover">
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">@book.Title</h5>
+                </div>
+                <div class="card-footer">
+                    <p class="card-price">R @book.Price</p>
+                    <button class="btn btn-outline-primary float-left mr-2" onclick="addToCart(@book.Id)">Add to Cart</button>
+                    <button class="btn btn-outline-danger float-right ml-2"><i class="fa fa-heart"></i></button>
+                </div>
+                <a href="@Url.Action("BookDetails", "Home", new { id = book.Id })" class="btn btn-primary">View Details</a>
+            </div>
+        </div>
+    }
+</div>
+<div style="text-align:center;">
+    @if (ViewBag.CurrentPage > 1)
+    {
+        <a href="#" onclick="return navigateToPage(@ViewBag.CurrentPage - 1, '@ViewBag.SortType')">Previous</a>
+        @if (ViewBag.CurrentPage > 2)
+        {
+            <a href="#" onclick="return navigateToPage(1, '@ViewBag.SortType')">1</a>
+            <span>...</span>
+        }
+    }
+
+    @for (int i = Math.Max(1, ViewBag.CurrentPage - 2); i <= Math.Min(ViewBag.TotalPages, ViewBag.CurrentPage + 2); i++)
+    {
+        if (i == ViewBag.CurrentPage)
+        {
+            <span>@i</span>
+        }
+        else
+        {
+            <a href="#" onclick="return navigateToPage(@i, '@ViewBag.SortType')">@i</a>
+        }
+    }
+
+    @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+    {
+        @if (ViewBag.CurrentPage < ViewBag.TotalPages - 1)
+        {
+            <span>...</span>
+            <a href="#" onclick="return navigateToPage(@ViewBag.TotalPages, '@ViewBag.SortType')">@ViewBag.TotalPages</a>
+        }
+        <a href="#" onclick="return navigateToPage(@ViewBag.CurrentPage + 1, '@ViewBag.SortType')">Next</a>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            var sortType = "@ViewBag.SortType"; // Get the sortType value from ViewBag
+            if (sortType) {
+                $("#sortOption").val(sortType); // Set the value of the select element
+            }
+        });
+        function sortBooks(page) {
+            var sortOption = document.getElementById('sortOption').value;
+            $.ajax({
+                url: '@Url.Action("Sort", "Browse")',
+                type: 'GET',
+                data: { sortOption: sortOption, page: page }, // Only pass sortOption
+                success: function (result) {
+                    $('#booksContainer').html(result);
+                },
+                error: function () {
+                    alert('Error occurred while sorting books.');
+                }
+            });
+        }
+
+        function navigateToPage(page) {
+            var sortType = document.getElementById('sortOption').value;
+            window.location.href = '@Url.Action("NavigateToPage", "Browse")' + '?page=' + page + '&sortType=' + sortType;
+            return false; // Prevent default link behavior
+        }
+
+        function addToCart(bookId) {
+            console.log(bookId)
+            $.ajax({
+                url: '@Url.Action("AddToCart", "Cart")', // Adjust the URL based on your controller and action names
+                type: 'POST',
+                data: { bookId: bookId },
+                success: function (response) {
+                    // Handle success response if needed
+                    alert('Book added to cart successfully!');
+                },
+                error: function (response) {
+                    console.log(response)
+                    alert('Error occurred while adding the book to cart.');
+                }
+            });
+        }
+    </script>
+}

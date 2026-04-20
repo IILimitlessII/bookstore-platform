@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>BookstorePlatform.Domain</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\BookstorePlatform.Web\Classes\**\*.cs" />
+    <Compile Include="..\BookstorePlatform.Web\Areas\Identity\Data\StoreUser.cs" />
+    <Compile Include="..\BookstorePlatform.Web\Areas\Identity\Data\Address.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.6" />
+  </ItemGroup>
+</Project>

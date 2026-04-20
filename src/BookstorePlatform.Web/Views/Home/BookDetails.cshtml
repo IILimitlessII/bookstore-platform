@@ -1,0 +1,148 @@
+﻿@model BookstorePlatform.Web.Models.BookDetailsViewModel
+
+@if (Model != null)
+{
+    <h2>Book Details</h2>
+
+    <div class="row">
+        <div class="col-md-4">
+            <img src="@Model.Book.CoverImg" alt="Book Cover" class="img-fluid">
+            <p class="text-center">Rating: @Model.Book.Rating/5</p>
+            <button class="btn btn-outline-primary float-left mr-2" onclick="addToCart(@Model.Book.Id)">Add to Cart</button>
+        </div>
+        <div class="col-md-8">
+            <h3 class="text-center">@Model.Book.Title</h3>
+            <p>@Model.Book.Description</p>
+
+            <table class="table">
+                <tbody>
+
+                    @if (Model.Authors.Any())
+                    {
+                        <tr>
+                            <td>Author(s)</td>
+                            <td>
+                                @foreach (var author in Model.Authors)
+                                {
+                                    <a href="@Url.Action("BooksByAuthor", "Home", new { authorIds = new List<int> { author.Id } })">@author.Name</a>
+                                    <br />
+                                }
+                            </td>
+                        </tr>
+                    }
+                    @if (!string.IsNullOrEmpty(Model.PublisherName))
+                    {
+                        <tr>
+                            <td>Publisher</td>
+                            <td>
+                                <a href="@Url.Action("BooksByPublisher", "Home", new { publisherId = Model.PublisherId })">@Model.PublisherName</a>
+                                <br />
+                            </td>
+                        </tr>
+                    }
+                    <tr>
+                        <td>Publish Date</td>
+                        <td>@Model.PublishDate</td>
+                    </tr>
+                    <tr>
+                        <td>ISBN</td>
+                        <td>@Model.Book.ISNB</td>
+                    </tr>
+                    <tr>
+                        <td>Book Format</td>
+                        <td>
+                            <a href="@Url.Action("BooksByFormat", "Home", new { bookFormat = Model.BookFormat })">@Model.BookFormat</a>
+                        </td>
+                    </tr>
+                    @if (!string.IsNullOrEmpty(Model.Book.Edition))
+                    {
+                        <tr>
+                            <td>Edition</td>
+                            <td>@Model.Book.Edition</td>
+                        </tr>
+                    }
+                    @if (!string.IsNullOrEmpty(Model.FirstPublishDate))
+                    {
+                        <tr>
+                            <td>First Publish Date</td>
+                            <td>@Model.FirstPublishDateMonth @Model.FirstPublishDateDay, @Model.FirstPublishDateYear</td>
+                        </tr>
+                    }
+
+                    <tr>
+                        <td>Genres</td>
+                        <td>
+                            @foreach (var genreName in Model.Genres)
+                            {
+                                <a href="@Url.Action("BooksByGenre", "Home", new { genreIds = new List<int> { Model.GenreIds[Model.Genres.IndexOf(genreName)] } })">@genreName</a>
+                                @if (!ReferenceEquals(genreName, Model.Genres.Last()))
+                                {
+                                    @:,
+                                }
+                            }
+                        </td>
+                    </tr>
+
+                    @if (!string.IsNullOrEmpty(Model.SeriesName))
+                    {
+                        <tr>
+                            <td>Series</td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(Model.SeriesName))
+                                {
+                                    <a href="@Url.Action("BooksBySeries", "Home", new { seriesId = Model.SeriesId })">@Model.SeriesName</a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                    @if (!string.IsNullOrEmpty(Model.Book.Characters))
+                    {
+                        <tr>
+                            <td>Characters</td>
+                            <td>
+                                @{
+                                    var charactersArray = Model.Book.Characters.Split(',', StringSplitOptions.RemoveEmptyEntries);
+                                    for (int i = 0; i < charactersArray.Length; i++)
+                                    {
+                                        var characterName = charactersArray[i].Trim(' ', '\'', '{', '}').Replace("\"", string.Empty);
+                                        @characterName
+                                        if (i < charactersArray.Length - 1)
+                                        {
+                                            @:,
+                                        }
+                                    }
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+else
+{
+    <p>Book not found.</p>
+}
+
+@section Scripts
+{
+    <script>
+        function addToCart(bookId) {
+            console.log(bookId)
+            $.ajax({
+                url: '@Url.Action("AddToCart", "Cart")', // Adjust the URL based on your controller and action names
+                type: 'POST',
+                data: { bookId: bookId },
+                success: function (response) {
+                    // Handle success response if needed
+                    alert('Book added to cart successfully!');
+                },
+                error: function (response) {
+                    console.log(response)
+                    alert('Error occurred while adding the book to cart.');
+                }
+            });
+        }
+    </script>
+}

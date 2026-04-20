@@ -1,0 +1,236 @@
+@{
+    ViewData["Title"] = "Browse Books";
+    var booksForRows = ViewBag.BooksForRows as List<List<BookstorePlatform.Web.Classes.Book>>;
+}
+
+
+@if (ViewBag.BooksByAuthor != null)
+{
+    var booksByAuthor = ViewBag.BooksByAuthor as List<BookstorePlatform.Web.Classes.Book> ?? new List<BookstorePlatform.Web.Classes.Book>();
+    <h2>Books By Author</h2>
+    <div class="row">
+        @foreach (var book in booksByAuthor)
+        {
+            <div class="col-md-2 mb-4">
+                <div class="card h-100">
+                    <div class="card-img-container">
+                        <img src="@book.CoverImg" class="card-img-top" alt="Book Cover">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">@book.Title</h5>
+                    </div>
+                    <div class="card-footer">
+                        <p class="card-price">R @book.Price</p>
+                        <button class="btn btn-outline-primary float-left mr-2" onclick="addToCart(@book.Id)">Add to Cart</button>
+                        <button class="btn btn-outline-danger float-right ml-2" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa fa-heart"></i></button>
+                    </div>
+                    <a href="@Url.Action("BookDetails", "Home", new { id = book.Id })" class="btn btn-primary">View Details</a>
+                </div>
+            </div>
+        }
+    </div>
+}
+@if (ViewBag.BooksByFormat != null)
+{
+    var booksByFormat = ViewBag.BooksByFormat as List<BookstorePlatform.Web.Classes.Book> ?? new List<BookstorePlatform.Web.Classes.Book>();
+    <h2>Books By Book Format</h2>
+    <div class="row">
+        @foreach (var book in booksByFormat)
+        {
+            <div class="col-md-2 mb-4">
+                <div class="card h-100">
+                    <div class="card-img-container">
+                        <img src="@book.CoverImg" class="card-img-top" alt="Book Cover">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">@book.Title</h5>
+                    </div>
+                    <div class="card-footer">
+                        <p class="card-price">R @book.Price</p>
+                        <button class="btn btn-outline-primary float-left mr-2" onclick="addToCart(@book.Id)">Add to Cart</button>
+                        <button class="btn btn-outline-danger float-right ml-2" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa fa-heart"></i></button>
+                    </div>
+                    <a href="@Url.Action("BookDetails", "Home", new { id = book.Id })" class="btn btn-primary">View Details</a>
+                </div>
+            </div>
+        }
+    </div>
+}
+@if (ViewBag.BooksByPublisher != null)
+{
+    var booksByPublisher = ViewBag.BooksByPublisher as List<BookstorePlatform.Web.Classes.Book> ?? new List<BookstorePlatform.Web.Classes.Book>();
+    <h2>Books By Publisher</h2>
+    <div class="row">
+        @foreach (var book in booksByPublisher)
+        {
+            <div class="col-md-2 mb-4">
+                <div class="card h-100">
+                    <div class="card-img-container">
+                        <img src="@book.CoverImg" class="card-img-top" alt="Book Cover">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">@book.Title</h5>
+                    </div>
+                    <div class="card-footer">
+                        <p class="card-price">R @book.Price</p>
+                        <button class="btn btn-outline-primary float-left mr-2" onclick="addToCart(@book.Id)">Add to Cart</button>
+                        <button class="btn btn-outline-danger float-right ml-2" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa fa-heart"></i></button>
+                    </div>
+                    <a href="@Url.Action("BookDetails", "Home", new { id = book.Id })" class="btn btn-primary">View Details</a>
+                </div>
+            </div>
+        }
+    </div>
+}
+@if (ViewBag.BooksBySeries != null)
+{
+    var booksBySeries = ViewBag.BooksBySeries as List<BookstorePlatform.Web.Classes.Book> ?? new List<BookstorePlatform.Web.Classes.Book>();
+    <h2>Books By Series</h2>
+    <div class="row">
+        @foreach (var book in booksBySeries)
+        {
+            <div class="col-md-2 mb-4">
+                <div class="card h-100">
+                    <div class="card-img-container">
+                        <img src="@book.CoverImg" class="card-img-top" alt="Book Cover">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">@book.Title</h5>
+                    </div>
+                    <div class="card-footer">
+                        <p class="card-price">R @book.Price</p>
+                        <button class="btn btn-outline-primary float-left mr-2" onclick="addToCart(@book.Id)">Add to Cart</button>
+                        <button class="btn btn-outline-danger float-right ml-2" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa fa-heart"></i></button>
+                    </div>
+                    <a href="@Url.Action("BookDetails", "Home", new { id = book.Id })" class="btn btn-primary">View Details</a>
+                </div>
+            </div>
+        }
+    </div>
+}
+@if (ViewBag.BooksByGenre != null)
+{
+    var booksByGenre = ViewBag.BooksByGenre as List<BookstorePlatform.Web.Classes.Book> ?? new List<BookstorePlatform.Web.Classes.Book>();
+    <h2>Books By Genres</h2>
+    <div class="row">
+        @foreach (var book in booksByGenre)
+        {
+            <div class="col-md-2 mb-4">
+                <div class="card h-100">
+                    <div class="card-img-container">
+                        <img src="@book.CoverImg" class="card-img-top" alt="Book Cover">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">@book.Title</h5>
+                    </div>
+                    <div class="card-footer">
+                        <p class="card-price">R @book.Price</p>
+                        <button class="btn btn-outline-primary float-left mr-2" onclick="addToCart(@book.Id)">Add to Cart</button>
+                        <button class="btn btn-outline-danger float-right ml-2" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa fa-heart"></i></button>
+                    </div>
+                    <a href="@Url.Action("BookDetails", "Home", new { id = book.Id })" class="btn btn-primary">View Details</a>
+                </div>
+            </div>
+        }
+    </div>
+}
+@if (booksForRows != null)
+{
+    <h2>Browse Books</h2>
+
+    @for (int i = 0; i < booksForRows.Count; i++)
+    {
+        <h3>Group @(i + 1)</h3>
+        <div class="row">
+            @foreach (var book in booksForRows[i])
+            {
+                <div class="col-md-2 mb-4">
+                    <div class="card h-100">
+                        <div class="card-img-container">
+                            <img src="@book.CoverImg" class="card-img-top" alt="Book Cover">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">@book.Title</h5>
+                        </div>
+                        <div class="card-footer">
+                            <p class="card-price">R @book.Price</p>
+                            <button class="btn btn-outline-primary float-left mr-2" onclick="addToCart(@book.Id)">Add to Cart</button>
+                            <button class="btn btn-outline-danger float-right ml-2" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa fa-heart"></i></button>
+                        </div>
+                        <a href="@Url.Action("BookDetails", "Home", new { id = book.Id })" class="btn btn-primary">View Details</a>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+    var randomBooks = ViewBag.RandomBooks as List<BookstorePlatform.Web.Classes.Book> ?? new List<BookstorePlatform.Web.Classes.Book>();
+
+    <h3>Random Books</h3>
+    <div class="row">
+        @foreach (var book in randomBooks)
+        {
+            <div class="col-md-2 mb-4">
+                <div class="card h-100">
+                    <div class="card-img-container">
+                        <img src="@book.CoverImg" class="card-img-top" alt="Book Cover">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">@book.Title</h5>
+                    </div>
+                    <div class="card-footer">
+                        <p class="card-price">R @book.Price</p>
+                        <button class="btn btn-outline-primary float-left mr-2" onclick="addToCart(@book.Id)">Add to Cart</button>
+                        <button class="btn btn-outline-danger float-right ml-2" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa fa-heart"></i></button>
+                    </div>
+                    <a href="@Url.Action("BookDetails", "Home", new { id = book.Id })" class="btn btn-primary">View Details</a>
+                </div>
+            </div>
+        }
+    </div>
+}
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Your Popup Title</h5>
+                <button type="button" class="close" aria-label="Close" onclick="closeModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Wishlist
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="closeModal()">Close</button>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        function addToCart(bookId) {
+            console.log(bookId)
+            $.ajax({
+                url: '@Url.Action("AddToCart", "Cart")', // Adjust the URL based on your controller and action names
+                type: 'POST',
+                data: { bookId: bookId },
+                success: function (response) {
+                    // Handle success response if needed
+                    alert('Book added to cart successfully!');
+                },
+                error: function (response) {
+                    console.log(response)
+                    alert('Error occurred while adding the book to cart.');
+                }
+            });
+        }
+
+        function closeModal() {
+            $('#exampleModal').modal('hide');
+        }
+    </script>
+}

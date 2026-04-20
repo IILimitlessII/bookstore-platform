@@ -1,0 +1,25 @@
+﻿@model List<BookstorePlatform.Web.Classes.Book>
+
+<div class="row" id="booksContainer">
+
+    @foreach (var book in Model)
+    {
+        <div class="col-md-2 mb-4">
+            <div class="card h-100">
+                <div class="card-img-container">
+                    <img src="@book.CoverImg" class="card-img-top" alt="Book Cover">
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">@book.Title</h5>
+                </div>
+                <div class="card-footer">
+                    <p class="card-price">R @book.Price</p>
+                    <button class="btn btn-outline-primary float-left mr-2"onclick="addToCart(@book.Id)">Add to Cart</button>
+                    <button class="btn btn-outline-danger float-right ml-2"><i class="fa fa-heart"></i></button>
+                </div>
+                <a href="@Url.Action("BookDetails", "Home", new { id = book.Id })" class="btn btn-primary">View Details</a>
+            </div>
+        </div>
+    }
+</div>
+

@@ -1,0 +1,95 @@
+@model BookstorePlatform.Web.Models.OrderViewModel
+
+<h1>View Order</h1>
+
+<div id="error-message" class="alert alert-danger" style="display: none;"></div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                Address
+            </div>
+            <div class="card-body">
+                <h5>Existing Addresses</h5>
+                <form asp-action="UseExistingAddress" id="useExistingAddressForm">
+                    @foreach (var address in Model.Addresses)
+                    {
+                        <div>
+                            <input type="radio" id="@address.AddressID" name="addressId" value="@address.AddressID" />
+                            <label for="@address.AddressID">@address.AddressLine1, @address.City, @address.Province - @address.ZipCode</label>
+                        </div>
+                    }
+                </form>
+
+
+                <hr />
+
+                <h5>Add New Address</h5>
+                <div class="text-center mt-3">
+                    <button id="addAddressBtn" class="btn btn-primary">Add Address</button>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                Cart Items and Total
+            </div>
+            <div class="card-body">
+                @foreach (var item in Model.CartItems)
+                {
+                    var book = item.Book;
+                    <div>
+                        <input type="hidden" id="cartId" name="cartId" value="@item.CartId" />
+                        <img src="@(book?.CoverImg ?? string.Empty)" alt="Book Cover" style="max-width: 100px; max-height: 150px;" />
+                        <p>Quantity: @item.Quantity</p>
+                        <p>Price: R @(book?.Price ?? "0.00")</p>
+                    </div>
+                }
+                <hr />
+                <p>Total: R @Model.Total</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="text-center mt-3">
+    <form>
+        <button id="confirmOrderBtn" type="button" class="btn btn-success">Confirm Order</button>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#addAddressBtn').click(function () {
+                window.location.href = 'https://localhost:7118/Identity/Account/Manage/Addresses';
+            });
+
+            $('#confirmOrderBtn').click(function (event) {
+                event.preventDefault();
+                var selectedAddressId = $('input[name="addressId"]:checked').val();
+                if (!selectedAddressId) {
+                    $('#error-message').text("Please select an address or create a new one");
+                    $('#error-message').show();
+                    console.log("error");
+                } else {
+                    console.log("success");
+
+                    // Find the value of the hidden field
+                    var cartId = $('#cartId').val();
+
+                    // Redirect to ConfirmOrder action with cartId and selectedAddressId as query parameters
+                    window.location.href = '@Url.Action("ConfirmOrder", "Order")?cartId=' + cartId + '&addressId=' + selectedAddressId;
+
+                }
+            });
+        });
+    </script>
+}
+

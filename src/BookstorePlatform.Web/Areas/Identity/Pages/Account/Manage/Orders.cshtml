@@ -1,0 +1,59 @@
+﻿@page
+@model BookstorePlatform.Web.Areas.Identity.Pages.Account.Manage.OrdersModel
+@{
+    ViewData["Title"] = "Orders";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@if (Model.Orders == null || !Model.Orders.Any())
+{
+    <p>No orders found.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>OrderId</th>
+                <th>Address</th>
+                <th>Date</th>
+                <th>Books Quantity</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model.Orders)
+            {
+                <tr>
+                    <td>@order.Id</td>
+                    <td>
+                        @if (order.AddressId.HasValue)
+                        {
+                            var addressId = order.AddressId.Value;
+                            <text>
+                                @Model.AddressDictionary[addressId].AddressLine1 @if (!string.IsNullOrEmpty(Model.AddressDictionary[addressId].AddressLine2))
+                                {
+                                    <text>, @Model.AddressDictionary[addressId].AddressLine2</text>
+                                }, @Model.AddressDictionary[addressId].City, @Model.AddressDictionary[addressId].Province, @Model.AddressDictionary[addressId].ZipCode
+                            </text>
+                        }
+                        else
+                        {
+                            <text>No address</text>
+                        }
+                    </td>
+                    <td>@order.OrderTimeStamp.ToShortDateString()</td>
+                    <td>@order.OrderTimeStamp.ToShortDateString()</td>
+                    <td>@Model.GetBooksQuantity(order.Id)</td>
+                    <td>
+                        <form method="post">
+                            <input type="hidden" name="orderId" value="@order.Id" />
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

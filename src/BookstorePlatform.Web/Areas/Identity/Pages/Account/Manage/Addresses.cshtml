@@ -1,0 +1,76 @@
+﻿@page
+@model AddressesModel
+@{
+    ViewData["Title"] = "Addresses";
+    ViewData["ActivePage"] = "Addresses";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<h4>Add New Address</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Input.AddressLine1" class="control-label"></label>
+                <input asp-for="Input.AddressLine1" class="form-control" />
+                <span asp-validation-for="Input.AddressLine1" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.AddressLine2" class="control-label"></label>
+                <input asp-for="Input.AddressLine2" class="form-control" />
+                <span asp-validation-for="Input.AddressLine2" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.City" class="control-label"></label>
+                <input asp-for="Input.City" class="form-control" />
+                <span asp-validation-for="Input.City" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.Province" class="control-label"></label>
+                <input asp-for="Input.Province" class="form-control" />
+                <span asp-validation-for="Input.Province" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.ZipCode" class="control-label"></label>
+                <input asp-for="Input.ZipCode" class="form-control" />
+                <span asp-validation-for="Input.ZipCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Add Address</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<hr />
+
+<h4>Current Addresses</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Address Line 1</th>
+            <th>Address Line 2</th>
+            <th>City</th>
+            <th>Province</th>
+            <th>Zip Code</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Addresses != null)
+        {
+            @foreach (var address in Model.Addresses)
+            {
+                <tr>
+                    <td>@address.AddressLine1</td>
+                    <td>@address.AddressLine2</td>
+                    <td>@address.City</td>
+                    <td>@address.Province</td>
+                    <td>@address.ZipCode</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
