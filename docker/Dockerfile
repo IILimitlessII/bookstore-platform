@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0.14 AS build
 WORKDIR /src
 COPY ["src/BookstorePlatform.Web/BookstorePlatform.Web.csproj", "src/BookstorePlatform.Web/"]
 COPY ["src/BookstorePlatform.Application/BookstorePlatform.Application.csproj", "src/BookstorePlatform.Application/"]
@@ -9,7 +9,7 @@ RUN dotnet restore "src/BookstorePlatform.Web/BookstorePlatform.Web.csproj"
 COPY . .
 RUN dotnet publish "src/BookstorePlatform.Web/BookstorePlatform.Web.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
-FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
+FROM mcr.microsoft.com/dotnet/aspnet:10.0.14 AS final
 WORKDIR /app
 RUN mkdir -p /app/Data
 COPY --from=build /app/publish .
